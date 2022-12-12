@@ -1,4 +1,10 @@
 <?php
 declare(strict_types=1);
 
-echo 'It works !';
+// Se connecter à la base de données
+
+
+// Récupérer les produits
+
+
+// Afficher les produits

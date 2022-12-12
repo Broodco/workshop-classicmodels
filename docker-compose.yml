@@ -7,11 +7,12 @@ services:
             - './src:/application'
             - './dbdata:/var/lib/mysql'
             - './scripts/init.sql:/docker-entrypoint-initdb.d/1.sql'
+            - './scripts/classicmodels.sql:/docker-entrypoint-initdb.d/2.sql'
         environment:
-            - MYSQL_ROOT_PASSWORD=pass1234
-            - MYSQL_DATABASE=php-playground
-            - MYSQL_USER=playground-user
-            - MYSQL_PASSWORD=playground-pass1234
+            - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
         ports:
             - '3002:3306'
 
@@ -27,21 +28,24 @@ services:
     php-fpm:
         build: phpdocker/php-fpm
         working_dir: /application
+        environment:
+            - PHP_FPM_CLEAR_ENV=no
+        env_file:
+            - .env
         volumes:
             - './src:/application'
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini'
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: pma
         links:
             - mysql
         environment:
-            PMA_HOST: mysql
+            PMA_HOST: ${DB_HOST}
             PMA_PORT: 3306
             PMA_ARBITRARY: 1
-            PMA_USER: "playground-user"
-            PMA_PASSWORD: "playground-pass1234"
+            PMA_USER: ${DB_USERNAME}
+            PMA_PASSWORD: ${DB_PASSWORD}
         restart: always
         depends_on:
             - mysql
