@@ -13,6 +13,16 @@ More importantly, you will also see in this tutorial some examples of form usage
 proper PDO statements and database transactions in PHP.
 It can serve as a point of reference for future exercises and projects.
 
+## What are the different steps ? 
+
+This project will happen in multiple steps : 
+* First, we will create a basic PHP application with the features mentioned above.
+* Then, we will refactor this to OOP.
+* Then, we will implement a routing system.
+* Finally, we will use the MVC architecture to organize the project.
+
+We currently are at the **first** step.
+
 ## Where to start ?
 
 This repository makes use of our usual Docker environment, but with an added bonus : the _classicmodels.sql_ script gets
