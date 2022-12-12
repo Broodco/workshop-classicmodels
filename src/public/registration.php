@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+session_start();
+
 require_once 'public/db/connection.php';
 
 if (empty($_POST)) {
@@ -9,9 +11,14 @@ if (empty($_POST)) {
     if (empty($validatedInput = validateInput($_POST))) {
         throw new Exception("Form data not validated.");
     }
+
     if (!addUserToDB($validatedInput, $pdo)) {
         throw new Exception("Error during registration.");
     }
+
+    $id = $pdo->lastInsertId();
+    loginRegisteredUser($id, $validatedInput['username'], $validatedInput['email']);
+
     http_response_code(302);
     header('location: index.php');
 }
@@ -51,4 +58,14 @@ function addUserToDB(array $input, PDO $pdo): bool
     $stmt->bindParam(':password', $input['password']);
 
     return $stmt->execute();
+}
+
+// 4 - Connecter utilisateur
+function loginRegisteredUser(string $id, string $username, string $email): void
+{
+    $_SESSION['user'] = [
+        'id' => $id,
+        'username' => $username,
+        'email' => $email
+    ];
 }

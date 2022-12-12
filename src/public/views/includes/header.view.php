@@ -12,11 +12,18 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/login.php">Login</a></li>
-            <li><a href="/registration.php">Register</a></li>
-            <li><a href="/logout.php">Logout</a></li>
+            <?php if (empty($_SESSION['user'])): ?>
+                <li><a href="/login.php">Login</a></li>
+                <li><a href="/registration.php">Register</a></li>
+            <?php else: ?>
+                <li><a href="/logout.php">Logout</a></li>
+            <?php endif; ?>
         </ul>
     </nav>
+
+    <?php if (!empty($_SESSION['user'])): ?>
+        <span>Hello <?= $_SESSION['user']['username'] ?></span>
+    <?php endif; ?>
 </header>
 
 <h1>Classic Models</h1>
