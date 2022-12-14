@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 session_start();
 
-require_once 'public/db/connection.php';
+require_once 'classes/Database.php';
 
 try {
-    // Récupérer les produits
-    $stmt = $pdo->prepare('SELECT productCode, productName FROM products LIMIT 20');
-    $stmt->execute();
-
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $db = new Database();
+    $products = $db->query(
+        'SELECT productCode, productName FROM products LIMIT 20'
+    )->fetchAll();
 
 } catch (Exception $e) {
     echo $e->getMessage();

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 session_start();
 
-require_once 'public/db/connection.php';
+require_once 'classes/Database.php';
 
 try {
     if (empty($_GET['code'])) {
@@ -12,10 +12,13 @@ try {
 
     $code = $_GET['code'];
 
-    $stmt = $pdo->prepare("SELECT productCode, productName, buyPrice FROM products WHERE productCode = ?");
-    $stmt->execute([$code]);
-
-    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    $db = new Database();
+    $product = $db->query(
+        "SELECT productCode, productName, buyPrice FROM products WHERE productCode = ?",
+        [
+            $code
+        ]
+    )->fetch();
 
 } catch (Exception $e) {
     echo $e->getMessage();
