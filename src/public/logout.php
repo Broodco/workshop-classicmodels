@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 session_start();
 
-unset($_SESSION['user']);
+require_once 'classes/AuthController.php';
 
-header('location: index.php');
+$authController = new AuthController();
+$authController->logout();

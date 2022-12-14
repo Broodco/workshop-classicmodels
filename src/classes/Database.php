@@ -24,4 +24,9 @@ class Database
 
         return $stmt;
     }
+
+    public function getLastInsertId(): false|string
+    {
+        return $this->pdo->lastInsertId();
+    }
 }
