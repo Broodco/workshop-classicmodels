@@ -6,4 +6,5 @@ RUN apt-get update; \
         git \ 
         php8.1-mysql; \
     apt-get clean; \
+    composer install; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
