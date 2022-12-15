@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-class Database
+abstract class Database
 {
     private PDO $pdo;
 
@@ -17,7 +17,7 @@ class Database
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 
-    public function query(string $query, array $params = []): false|PDOStatement
+    protected function query(string $query, array $params = []): false|PDOStatement
     {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);

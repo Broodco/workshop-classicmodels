@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-require_once 'classes/Database.php';
 
 class AuthController
 {
@@ -36,14 +35,14 @@ class AuthController
         ];
 
         http_response_code(302);
-        header('location: index.php');
+        header('location: /');
     }
 
     public function showRegistrationForm(): void
     {
-        include 'public/views/includes/header.view.php';
-        include 'public/views/registration.view.php';
-        include 'public/views/includes/footer.view.php';
+        include 'views/includes/header.view.php';
+        include 'views/registration.view.php';
+        include 'views/includes/footer.view.php';
     }
 
     public function login(array $input)
@@ -78,20 +77,20 @@ class AuthController
 
         // Then, we redirect to the home page
         http_response_code(302);
-        header('location: index.php');
+        header('location: /');
     }
 
     public function showLoginForm()
     {
-        include 'public/views/includes/header.view.php';
-        include 'public/views/login.view.php';
-        include 'public/views/includes/footer.view.php';
+        include 'views/includes/header.view.php';
+        include 'views/login.view.php';
+        include 'views/includes/footer.view.php';
     }
 
     public function logout()
     {
         unset($_SESSION['user']);
 
-        header('location: index.php');
+        header('location: /');
     }
 }
