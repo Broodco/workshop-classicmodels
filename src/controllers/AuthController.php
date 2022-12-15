@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 class AuthController
 {
+    private Auth $authModel;
+
+    public function __construct()
+    {
+        $this->authModel = new Auth();
+    }
+
     public function register(array $input): void
     {
         if (empty($input['username']) || empty($input['email']) || empty($input['password'])) {
@@ -14,19 +21,9 @@ class AuthController
         $email = filter_var($input['email'], FILTER_SANITIZE_EMAIL);
         $password = password_hash($input['password'], PASSWORD_DEFAULT);
 
-        $db = new Database();
-        if (!$db->query(
-            "INSERT INTO users(username, email, password) VALUES (?, ?, ?)",
-            [
-                $username,
-                $email,
-                $password
-            ]
-        )) {
-            throw new Exception('Error during registration.');
-        }
+        $this->authModel->create($username, $email, $password);
 
-        $id = $db->getLastInsertId();
+        $id = $this->authModel->getLastInsertId();
 
         $_SESSION['user'] = [
             'id' => $id,
@@ -55,15 +52,7 @@ class AuthController
         $username = htmlspecialchars($input['username']);
         $password = htmlspecialchars($input['password']);
 
-        $db = new Database();
-        if (!$user = $db->query(
-            "SELECT * FROM users WHERE username = ?",
-            [
-                $username,
-            ]
-        )->fetch()) {
-            throw new Exception('Failed login attempt : connection error.');
-        }
+        $user = $this->authModel->find($username);
 
         if (!password_verify($password, $user['password'])) {
             throw new Exception("Failed login attempt : wrong password");
